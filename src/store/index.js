@@ -14,6 +14,9 @@ export default new Vuex.Store({
     },
     POST_ADD(state, data) {
       state.posts.unshift(data);
+    },
+    POST_REMOVE(state, id) {
+      state.posts = state.posts.filter(p => p.id !== id);
     }
   },
   actions: {
@@ -29,11 +32,16 @@ export default new Vuex.Store({
         await axios.post(
           "https://jsonplaceholder.typicode.com/posts", data
         );
-      const post = response.data;
-      context.commit("POST_ADD", post);
-
-      return post;
+      context.commit("POST_ADD", response.data);
     },
+    async POST_DELETE(context, id) {
+      await axios.delete(
+        "https://jsonplaceholder.typicode.com/posts/" + id
+      );
+      context.commit("POST_REMOVE", id);
+    },
+
+
   },
   getters: {
     posts(state) {

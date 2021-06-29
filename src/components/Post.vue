@@ -17,6 +17,9 @@
 <script>
 import { mapActions } from "vuex";
 export default {
+  mounted() {
+    if (!this.posts.length) this.POSTS_FETCH();
+  },
   props: { post: Object },
   methods: {
     ...mapActions(["POST_DELETE"]),

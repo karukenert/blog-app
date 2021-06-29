@@ -26,6 +26,7 @@ export default new Vuex.Store({
       );
       const posts = response.data.slice(0, 20);
       context.commit("POSTS_SET", posts);
+      return posts;
     },
     async POST_CREATE(context, data) {
       const response =

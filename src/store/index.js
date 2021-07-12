@@ -17,7 +17,11 @@ export default new Vuex.Store({
     },
     POST_REMOVE(state, id) {
       state.posts = state.posts.filter(p => p.id !== id);
-    }
+    },
+    POST_MODIFY(state, data) {
+      const postIndex = state.posts.findIndex(p => p.id === data.id);
+      state.posts[postIndex] = data;
+    },
   },
   actions: {
     async POSTS_FETCH(context) {
@@ -40,6 +44,13 @@ export default new Vuex.Store({
         "https://jsonplaceholder.typicode.com/posts/" + id
       );
       context.commit("POST_REMOVE", id);
+    },
+    async POST_UPDATE(context, data) {
+      const response = await axios.put(`https://jsonplaceholder.typicode.com/posts/${data.id}`, data);
+      const post = response.data;
+      context.commit('POST_MODIFY', post);
+
+      return post;
     },
 
 
